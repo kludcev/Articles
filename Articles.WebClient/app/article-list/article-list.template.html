@@ -1,0 +1,32 @@
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-2">
+      <div>
+        <label>Title</label>
+        <input ng-model="inputTitle"/>
+      </div>
+      <div>
+          <label>Description</label>
+          <textarea ng-model="inputDescription"></textarea>
+        </div>  
+    <button ng-click="onAddArticleButtonClick()">Add new Article</button>
+    </div>
+
+    <div class="col-md-10">
+      <!--Body content-->
+
+      <ul class="articles">
+        <li ng-repeat="phone in $ctrl.articles"
+            class="thumbnail article-list-item">
+            <button class="article-delete-button" ng-click="onDelButtonClick(phone.Id)">X</button>
+          <h2 class="article-title">{{phone.Title}}</h2>
+          <span>{{phone.Description}}</span>
+        </li>
+      </ul>
+      <div>
+        <button ng-hide="!$ctrl.makeAnotherRequest" ng-click="onLoadNewArticlesButtonClick()">Load More Articles</button>
+      </div>
+    </div>
+  </div>
+</div>

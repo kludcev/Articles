@@ -1,0 +1,50 @@
+body {
+  padding: 20px;
+}
+
+h1 {
+  border-bottom: 1px solid gray;
+  margin-top: 0;
+}
+
+/* View: Phone list */
+.articles {
+  list-style: none;
+}
+
+.articles li {
+  clear: both;
+  padding-top: 15px;
+}
+
+.thumb {
+  float: left;
+  height: 100px;
+  margin: -0.5em 1em 1.5em 0;
+  padding-bottom: 1em;
+  width: 100px;
+}
+
+/* View: Phone detail */
+.article {
+  background-color: white;
+  display: none;
+  float: left;
+  height: 400px;
+  margin-bottom: 2em;
+  margin-right: 3em;
+  padding: 2em;
+  width: 400px;
+}
+
+.article:first-child {
+  display: block;
+}
+
+.article-delete-button {
+  float: right;
+}
+
+.article-title {
+  margin-top: 0px;
+}
