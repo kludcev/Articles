@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Dto\ArticleCreateDto.cs" />
     <Compile Include="Dto\ArticleDto.cs" />
+    <Compile Include="Dto\ArticlePatchDto.cs" />
     <Compile Include="Dto\ErrorResponseDto.cs" />
     <Compile Include="Dto\PageQueryDto.cs" />
     <Compile Include="Exceptions\AppBaseException.cs" />

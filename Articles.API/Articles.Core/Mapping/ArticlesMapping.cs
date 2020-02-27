@@ -19,6 +19,12 @@ namespace Articles.Core.Mapping
                 .ForMember(d => d.Title, m => m.MapFrom(s => s.Title))
                 .ForMember(d => d.Description, m => m.MapFrom(s => s.Description))
                 .ForMember(d => d.CreatedDate, m => m.MapFrom(s => s.CreatedDate));
+
+            CreateMap<ArticlePatchDto, Article>()
+                .ForMember(d => d.Id, m => m.Ignore())
+                .ForMember(d => d.Title, m => m.Condition(d => !string.IsNullOrEmpty(d.Title)))
+                .ForMember(d => d.Description, m => m.Condition(s => !string.IsNullOrEmpty(s.Description)))
+                .ForMember(d => d.CreatedDate, m => m.Condition(s => s.CreatedDate != null));
         }
     }
 }
