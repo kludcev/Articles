@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using Articles.Core.Entities;
 using Articles.Core.Exceptions;
 using Articles.Core.Services.Interfaces;
@@ -20,34 +21,46 @@ namespace Articles.Core.Services
             _articlesContext = articlesContext ?? throw new ArgumentNullException(nameof(articlesContext));
         }
 
-        public ICollection<ArticleDto> GetArticles(int pageSize, int offset)
+        public async Task<ICollection<ArticleDto>> GetArticles(int pageSize, int offset)
         {
-            return _articlesContext.Articles
+            return await _articlesContext.Articles
+                .AsNoTracking()
                 .OrderByDescending(x => x.CreatedDate)
                 .Skip(offset * pageSize)
                 .Take(pageSize)
                 .ProjectTo<ArticleDto>(_mapper.ConfigurationProvider)
-                .ToList();
+                .ToListAsync();
 
         }
 
-        public ArticleDto CreateArticle(ArticleCreateDto articleDto)
+        public async Task<ArticleDto> CreateArticle(ArticleCreateDto articleDto)
         {
             var entity = _mapper.Map<Article>(articleDto);
             _articlesContext.Articles.Add(entity);
-            _articlesContext.SaveChanges();
+            await _articlesContext.SaveChangesAsync();
             return _mapper.Map<Article, ArticleDto>(entity);
         }
 
-        public void DeleteArticle(Guid id)
+        public async Task DeleteArticle(Guid id)
         {
             var entity = _articlesContext.Articles.FirstOrDefault(p => p.Id == id);
             if (entity == null)
             {
                 throw new EntityNotFoundException($"Entity with {id} is not found in Article table");
             }
-            _articlesContext.Entry(entity).State = EntityState.Deleted;
-            _articlesContext.SaveChanges();
+            _articlesContext.Articles.Remove(entity);
+            await _articlesContext.SaveChangesAsync();
+        }
+
+        public async Task PatchArticle(ArticlePatchDto articlePatch)
+        {
+            var entity = _articlesContext.Articles.FirstOrDefault(p => p.Id == articlePatch.Id);
+            if (entity == null)
+            {
+                throw new EntityNotFoundException($"Entity with {articlePatch.Id} is not found in Article table");
+            }
+            _mapper.Map(articlePatch, entity);
+            await _articlesContext.SaveChangesAsync();
         }
     }
 }
